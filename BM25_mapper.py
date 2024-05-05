@@ -13,7 +13,7 @@ class BM25Mapper:
         postings = postings.split(', ')
         for posting in postings:
             doc_id, word_freq = posting.split(':')
-            print(f"{doc_id}\t{word}\t{word_freq}")
+            print "%s\t%s\t%s" % (doc_id, word, word_freq)
 
 # Main function for mapper
 if __name__ == "__main__":
