@@ -37,9 +37,22 @@ doc_id to corresponding url and title we will use hadoop map reduce
 ```bash
 hadoop jar $HADOOP_HOME/hadoop-streaming-3.2.3.jar     -input gs://nyu-dataproc-hdfs-ingest/scrap.txt    -output BM25Top10     -mapper "python mapper_scrap.py"     -reducer "python reducer_scrap.py"     -file mapper_scrap.py     -file reducer_scrap.py  -file test.txt
 ```
-
 And after getting the output we will concat them using 
 
 ```bash
 hdfs dfs -cat BM25Top10/part*
+```
+
+## Ranking documents with BM25 algorithm
+
+Hadoop command to run BM25 MapReduce program\
+Edit the command to input your query at -cmdenv QUERY="Your query here"\
+Check below:
+```bash
+hadoop jar $HADOOP_HOME/hadoop-streaming-3.2.3.jar     -input gs://nyu-dataproc-hdfs-ingest/output_project.txt    -output BM25_ranking_output     -mapper "python BM25_mapper.py"     -reducer "python BM25_reducer3.py"     -file BM25_mapper.py     -file BM25_reducer3.py  -cmdenv QUERY="Your query here"
+```
+
+Then concat the output using
+```bash
+hdfs dfs -cat BM25_ranking_output/part* | sort > BM25_output.txt
 ```
