@@ -32,16 +32,6 @@ The mapper script (`mapper_inversionTree.py`) reads and processes input data to 
 The reducer script (`reducer_inversionTree.py`) aggregates the output from the mapper, compiling and organizing each word into an inversion tree which forms the basis for the search index.
 
 
-## Mapping 
-doc_id to corresponding url and title we will use hadoop map reduce
-```bash
-hadoop jar $HADOOP_HOME/hadoop-streaming-3.2.3.jar     -input gs://nyu-dataproc-hdfs-ingest/scrap.txt    -output BM25Top10     -mapper "python mapper_scrap.py"     -reducer "python reducer_scrap.py"     -file mapper_scrap.py     -file reducer_scrap.py  -file test.txt
-```
-And after getting the output we will concat them using 
-
-```bash
-hdfs dfs -cat BM25Top10/part*
-```
 
 ## Ranking documents with BM25 algorithm
 
@@ -55,4 +45,16 @@ hadoop jar $HADOOP_HOME/hadoop-streaming-3.2.3.jar     -input gs://nyu-dataproc-
 Then concat the output using
 ```bash
 hdfs dfs -cat BM25_ranking_output/part* | sort > BM25_output.txt
+```
+
+
+## Mapping 
+doc_id to corresponding url and title we will use hadoop map reduce
+```bash
+hadoop jar $HADOOP_HOME/hadoop-streaming-3.2.3.jar     -input gs://nyu-dataproc-hdfs-ingest/scrap.txt    -output BM25Top10     -mapper "python mapper_scrap.py"     -reducer "python reducer_scrap.py"     -file mapper_scrap.py     -file reducer_scrap.py  -file test.txt
+```
+And after getting the output we will concat them using 
+
+```bash
+hdfs dfs -cat BM25Top10/part*
 ```
